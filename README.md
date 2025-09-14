@@ -1,5 +1,14 @@
 # ![NodeBB](public/images/sm-card.png)
 
+# Team: Bluey
+
+## Members
+- Lisa Huang (wenleh)
+- Diano Cano (dcano)
+- Luciana Requena (lrequena)
+- Michael Yan (tingxiay)
+- Sam Curry (scurry)
+
 ![Team Contribution Summary](https://raw.githubusercontent.com/CMU-313/NodeBB/gittogether-svg/activity.svg)
 
 [![Workflow](https://github.com/NodeBB/NodeBB/actions/workflows/test.yaml/badge.svg)](https://github.com/NodeBB/NodeBB/actions/workflows/test.yaml)
