@@ -11,6 +11,14 @@
 		<!-- IMPORT partials/topic-list-bar.tpl -->
 
 		<div class="category">
+			<!-- Unanswered filter pills -->
+			<div class="d-flex align-items-center gap-2 mb-3">
+				<span class="text-muted">Filter:</span>
+				<a class="btn btn-sm btn-outline-secondary"
+					href="{relative_path}/recent">All</a>
+				<a class="btn btn-sm btn-outline-secondary"
+					href="{relative_path}/recent?filter=unreplied">Unanswered</a>
+			</div>
 			{{{ if !topics.length }}}
 			<div class="alert alert-info" id="category-no-topics">[[recent:no-recent-topics]]</div>
 			{{{ end }}}
