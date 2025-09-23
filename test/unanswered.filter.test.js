@@ -14,8 +14,6 @@ const { expect } = require('chai');
 const cheerio = require('cheerio');
 const supertest = require('supertest');
 
-const nbb = require('../require-main.js');
-
 const meta = require('../src/meta');
 const Categories = require('../src/categories');
 const Topics = require('../src/topics');
@@ -34,7 +32,6 @@ describe('Unanswered filter UI & API', function () {
 	let tidUnreplied;
 
 	before(async () => {
-		await nbb.start();
 
 		const port = meta.config.port || 4567;
 		request = supertest(`http://127.0.0.1:${port}`);
@@ -90,7 +87,6 @@ describe('Unanswered filter UI & API', function () {
 		} catch (e) {
 			// ignore cleanup errors in CI
 		}
-		await nbb.stop();
 	});
 
 	describe('Header quick link', () => {
