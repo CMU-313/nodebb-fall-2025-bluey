@@ -37,8 +37,17 @@ describe('Unanswered filter UI & API', function () {
 		request = supertest(`http://127.0.0.1:${port}`);
 
 		// create users
-		uidAuthor = await User.create({ username: 'instructor', password: 'pass', email: 'instructor+unanswered@test.local' });
-		uidReplier = await User.create({ username: 'student', password: 'pass', email: 'student+unanswered@test.local' });
+		const suffix = Date.now().toString(36);
+		uidAuthor = await User.create({
+			username: `instructor-${suffix}`,
+			password: 'P@ssw0rd123456!',
+			email: `instructor+unanswered-${suffix}@test.local`,
+		});
+		uidReplier = await User.create({
+			username: `student-${suffix}`,
+			password: 'P@ssw0rd123456!',
+			email: `student+unanswered-${suffix}@test.local`,
+		});
 
 		// make instructor admin (avoid any perms surprises)
 		await Groups.join('administrators', uidAuthor);
@@ -81,8 +90,8 @@ describe('Unanswered filter UI & API', function () {
 
 	after(async () => {
 		try {
-			if (tidWithReply) await Topics.delete({ uid: 1, tids: [tidWithReply] });
-			if (tidUnreplied) await Topics.delete({ uid: 1, tids: [tidUnreplied] });
+			if (tidWithReply) await Topics.delete({ uid: uidAuthor, tids: [tidWithReply] });
+			if (tidUnreplied) await Topics.delete({ uid: uidAuthor, tids: [tidUnreplied] });
 			if (cid) await Categories.purge(cid);
 		} catch (e) {
 			// ignore cleanup errors in CI
