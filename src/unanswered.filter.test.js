@@ -1,4 +1,5 @@
 /* eslint-env mocha */
+/* eslint-disable no-undef */
 'use strict';
 
 process.env.NODE_ENV = 'test';
@@ -14,12 +15,12 @@ const { expect } = require('chai');
 const cheerio = require('cheerio');
 const supertest = require('supertest');
 
-const meta = require('../src/meta');
-const Categories = require('../src/categories');
-const Topics = require('../src/topics');
-const Posts = require('../src/posts');
-const User = require('../src/user');
-const Groups = require('../src/groups');
+const meta = require('./meta');
+const Categories = require('./categories');
+const Topics = require('./topics');
+const Posts = require('./posts');
+const User = require('./user');
+const Groups = require('./groups');
 
 describe('Unanswered filter UI & API', function () {
 	this.timeout(40000);
