@@ -4,11 +4,11 @@
   "description": "Adds a section under the composer title for suggested topics.",
   "version": "0.0.1",
   "library": "library.js",
-  "scripts": [
-    "static/lib/main.js"
-  ],
   "hooks": [
     { "hook": "static:app.load", "method": "init" }
+  ],
+  "scripts": [
+    "static/lib/main.js"
   ],
   "compatibility": "^3.0.0"
 }
