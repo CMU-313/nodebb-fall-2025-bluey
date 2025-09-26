@@ -10,14 +10,16 @@ define('composer-suggestions/main', [], function () {
         const composerEl = $('.composer[data-uuid="' + data.post_uuid + '"]');
         const titleEl = composerEl.find('input.title');
 
+        const titleContainer = composerEl.find('.title-container');
+
         if (titleEl.length && !composerEl.find('.suggested-topics').length) {
-            titleEl.after(
+            titleContainer.after(
                 '<div class="suggested-topics"><strong>Suggested Topics will appear here...</strong></div>'
             );
+             console.log('[composer-suggestions] ENTERED UI');
         }
     };
-
-    // Run when composer loads
+    
     $(window).on('action:composer.loaded', function (ev, data) {
         Suggestions.addPlaceholder(data);
     });
