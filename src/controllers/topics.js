@@ -111,11 +111,7 @@ topicsController.get = async function getTopic(req, res, next) {
 			const authorUid = parseInt((p.user && p.user.uid) || p.uid || 0, 10) || 0;
 			const role = await getRoleLabel(authorUid);
 
-			// Optional one-time debug; comment out when done
-			// winston.info('[roleLabel:page]', { pid: p.pid, authorUid, role });
-
 			p.roleLabel = role;
-			//if (p.user) p.user.roleLabel = role;
 			return p;
 		}));
 	}
