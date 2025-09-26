@@ -101,7 +101,7 @@ topicsController.get = async function getTopic(req, res, next) {
 	}
 	const { start, stop } = calculateStartStop(currentPage, postIndex, settings);
 
-	// Load topic + posts that will be rendered
+	// Load topic + posts that will be rendered 
 	await topics.getTopicWithPosts(topicData, set, req.uid, start, stop, reverse);
 
 	/* NEW: attach role labels so templates can show (Instructor|TA|Student) */
