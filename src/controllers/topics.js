@@ -22,6 +22,19 @@ const relative_path = nconf.get('relative_path');
 const upload_url = nconf.get('upload_url');
 const validSorts = ['oldest_to_newest', 'newest_to_oldest', 'most_votes'];
 
+/* NEW: helper to compute the label shown next to each post author */
+async function getRoleLabel(uid) {
+	if (!uid) return 'Student-';
+
+	// API-based checks
+	try {
+		if (await user.isAdministrator(uid)) return 'Instructor';
+		if (await user.isGlobalModerator(uid)) return 'TA';
+	} catch (_) { /* ignore and fall back to groups */ }
+
+	return 'Student';
+}
+
 topicsController.get = async function getTopic(req, res, next) {
 	const tid = req.params.topic_id;
 	if (
@@ -88,7 +101,24 @@ topicsController.get = async function getTopic(req, res, next) {
 	}
 	const { start, stop } = calculateStartStop(currentPage, postIndex, settings);
 
+	// Load topic + posts that will be rendered
 	await topics.getTopicWithPosts(topicData, set, req.uid, start, stop, reverse);
+
+	/* NEW: attach role labels so templates can show (Instructor|TA|Student) */
+	if (Array.isArray(topicData.posts)) {
+		await Promise.all(topicData.posts.map(async (p) => {
+			if (!p) return p;
+			const authorUid = parseInt((p.user && p.user.uid) || p.uid || 0, 10) || 0;
+			const role = await getRoleLabel(authorUid);
+
+			// Optional one-time debug; comment out when done
+			// winston.info('[roleLabel:page]', { pid: p.pid, authorUid, role });
+
+			p.roleLabel = role;
+			//if (p.user) p.user.roleLabel = role;
+			return p;
+		}));
+	}
 
 	topics.modifyPostsByPrivilege(topicData, userPrivileges);
 	topicData.tagWhitelist = categories.filterTagWhitelist(topicData.tagWhitelist, userPrivileges.isAdminOrMod);
