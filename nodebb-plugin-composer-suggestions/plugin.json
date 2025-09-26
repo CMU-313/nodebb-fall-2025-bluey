@@ -6,5 +6,6 @@
   "library": "library.js",
   "hooks": [
     { "hook": "static:app.load", "method": "init" }
-  ]
+  ],
+  "compatibility": "^3.0.0"
 }
