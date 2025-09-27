@@ -295,4 +295,40 @@ $(document).ready(function () {
 		mainNavEl.on('shown.bs.dropdown', toggleOverflow)
 			.on('hidden.bs.dropdown', toggleOverflow);
 	}
+
+	function setComposerAnonymousForForm($form, value) {
+		let $hidden = $form.find('input[name="anonymous"]');
+		if (!$hidden.length) {
+			$hidden = $('<input/>', { type: 'hidden', name: 'anonymous' }).appendTo($form);
+		}
+		$hidden.val(value ? '1' : '0');
+	}
+
+	$(document).on('submit', '.composer-form', function () {
+		const $form = $(this);
+		try {
+			const $chk = $form.find('#composer-anonymous-toggle');
+			const checked = $chk.length ? $chk.prop('checked') : ($form.find('input[name="anonymous"]').val() === '1');
+			setComposerAnonymousForForm($form, checked);
+		} catch (err) {
+			// ignore
+		}
+	});
+
+	try {
+		const params = new URLSearchParams(window.location.search);
+		const anon = params.get('anonymous');
+		if (anon === '1' || anon === 'true') {
+			$(document).on('action:composer.open', function (evt, data) {
+				const $form = data && data.$form ? data.$form : $('.composer-form').first();
+				if (!$form || !$form.length) return;
+				const $chk = $form.find('#composer-anonymous-toggle');
+				if ($chk.length) $chk.prop('checked', true);
+				setComposerAnonymousForForm($form, true);
+			});
+			$('.composer-form').each(function () { setComposerAnonymousForForm($(this), true); });
+		}
+	} catch (err) {
+		// ignore
+	}
 });

@@ -35,6 +35,7 @@ module.exports = function (Topics) {
 			lastposttime: 0,
 			postcount: 0,
 			viewcount: 0,
+			anonymous: data.anonymous,
 		};
 
 		if (Array.isArray(data.tags) && data.tags.length) {
@@ -83,6 +84,12 @@ module.exports = function (Topics) {
 	Topics.post = async function (data) {
 		data = await plugins.hooks.fire('filter:topic.post', data);
 		const { uid } = data;
+
+		data.anonymous = (data.anonymous === true) || (data.anonymous === 1);
+		if (data.anonymous) {
+			data.realUid = uid;
+			data.uid = 0;
+		}
 
 		const [categoryExists, canCreate, canTag, isAdmin] = await Promise.all([
 			parseInt(data.cid, 10) > 0 ? categories.exists(data.cid) : true,
@@ -200,6 +207,12 @@ module.exports = function (Topics) {
 			}
 		}
 
+		data.anonymous = (data.anonymous === true) || (data.anonymous === 1);
+		if (data.anonymous) {
+			data.realUid = uid;
+			data.uid = 0;
+		}
+
 		// For replies to scheduled topics, don't have a timestamp older than topic's itself
 		if (topicData.scheduled) {
 			data.timestamp = topicData.lastposttime + 1;
@@ -244,6 +257,16 @@ module.exports = function (Topics) {
 			posts.getPostSummaryByPids([pid], uid, {}),
 			posts.getUserInfoForPosts([postOwner], uid),
 		]);
+
+		postData.user = userInfo;
+		if (postData.anonymous) {
+			postData.user = {
+				uid: 0,
+				displayname: 'Guest',
+				originalUid: userInfo && userInfo.uid,
+			};
+		}
+
 		await Promise.all([
 			Topics.addParentPosts([postData], uid),
 			Topics.syncBacklinks(postData),
