@@ -28,6 +28,7 @@
 								<span class="form-text text-xs">[[register:help.minimum-password-length, {minimumPasswordLength}]]</span>
 								<p id="caps-lock-warning" class="text-danger hidden">
 									<i class="fa fa-exclamation-triangle"></i> [[login:caps-lock-enabled]]
+									[[login:show-password]]
 								</p>
 							</div>
 						</div>

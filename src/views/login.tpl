@@ -22,6 +22,7 @@
 								<input class="form-control" type="password" placeholder="[[user:password]]" name="password" id="password" autocomplete="current-password" autocapitalize="off" aria-required="true"/>
 								<p id="caps-lock-warning" class="text-danger hidden text-sm mb-0 form-text" aria-live="polite" role="alert" aria-atomic="true">
 									<i class="fa fa-exclamation-triangle"></i> [[login:caps-lock-enabled]]
+									[[login:show-password]]
 								</p>
 							</div>
 							{{{ if allowPasswordReset }}}
