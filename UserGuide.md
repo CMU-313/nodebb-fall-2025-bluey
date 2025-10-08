@@ -1,33 +1,32 @@
-# User Guide — Post Author Role Labels
+# User Guide
 
-This document describes the feature additions in this branch, how to manually verify them in the running application, and where to find and run the automated tests that cover the changes.
+This document provides instructions and testing details for the new features implemented by each team member in Project 2.
+Each section describes a specific feature, its purpose, how to use or test it, and the automated tests written to ensure functionality.
+
+---
+
+## **Section 1 – [Feature Placeholder: Member 1]**
+Include: (look on website for details on what to write)
+- Purpose and functionality overview  
+- Steps for using/testing  
+- Automated test details
+
+---
+
+## **Section 2 – Post Author Role Labels (Michael Yan)**
 
 Overview
 --------
 This change ensures a role label (e.g. Instructor, TA, Student) is attached to each post's author data and rendered next to the author's display name in topic pages. The goal is to make role information visible in the UI and to add a small, focused frontend test that protects against regressions in how the role label is rendered and displayed.
-
-Files changed / added
----------------------
-- `src/controllers/topics.js`
-  - New helper `getRoleLabel(uid)` that determines a high-level role label for a user (checks administrator/global-moderator APIs and falls back to `Student`).
-  - When loading posts for a topic, the controller attaches `p.roleLabel` for each post so templates can render it.
-
-- `test/topic-role-labels.js` (new)
-  - A frontend unit test (Mocha + JSDOM + jQuery) that asserts a `.role-label` appears immediately after a poster's display name and maps to a general role category.
-
-- `build/public/templates/topic.tpl` / theme templates
-  - The topic template renders a `.role-label` span after the post author displayname if `posts.roleLabel` or `posts.user.roleLabel` is present; otherwise, it falls back to `(Student)`. (This is part of the theme/template that consumes the controller-provided data.)
 
 Manual usage and testing (user-facing)
 --------------------------------------
 These steps let you manually confirm the feature in a running NodeBB instance.
 
 1. Start the application
-   - If you normally run NodeBB locally, start it as you normally would. Typical commands in this project:
+   - Start NodeBB locally as you normally would.
      ```bash
      npm start
-     # or if you use the NodeBB loader
-     node loader.js
      ```
    - Ensure your dev environment (database, redis) is running.
 
@@ -43,7 +42,7 @@ These steps let you manually confirm the feature in a running NodeBB instance.
    - Navigate to the topic in the browser.
    - For each post, look at the post header (next to the display name). You should see a small label in parentheses after the author's displayname, such as:
      - (Instructor)
-     - (TA) or some TA-like form
+     - (TA)
      - (Student)
 
 5. Verify tolerant rendering for TA labels
@@ -72,12 +71,11 @@ What the test checks
   - Unknown labels (e.g. `(unknown)`) must not match any known roles
 
 Why this test is sufficient for the change
-- The essential risk introduced by the controller change is: templates must correctly display the role label attached to posts. The test verifies that the rendered markup contains a `.role-label` immediately after the displayname and that the label text contains an expected role keyword even if formatted in various ways. This is a low-risk, focused smoke test to prevent regressions where the role label is dropped, mis-positioned, or rendered empty.
+- The essential risk introduced by the controller change is: templates must correctly display the role label attached to posts. The test verifies that the rendered markup contains a `.role-label` immediately after the displayname and that the label text contains an expected role keyword even if formatted in various ways. This is a focused smoke test to prevent regressions where the role label is dropped, mis-positioned, or rendered empty.
 
 Limitations and suggested extensions
 - The test uses a handcrafted DOM snippet rather than rendering the theme/template end-to-end. This makes it fast and robust, but not strictly end-to-end.
-- If you want E2E coverage, add a test that renders the real topic template using the template engine (or boot a small server instance and do an HTTP request to the topic page) and assert the output contains the expected label. That would be slightly larger and likely slower, but will provide stronger coverage of template/controller integration.
-- You can add more role synonyms to the test if you expect additional variations (e.g., `t.a.`, `teaching-assistant`, `lab-ta`).
+- Add more role synonyms to the test for expect additional variations (e.g., `t.a.`, `teaching-assistant`, `lab-ta`).
 
 How to run the automated test(s)
 
@@ -87,24 +85,104 @@ How to run the automated test(s)
 npm test -- test/topic-role-labels.js
 ```
 
-- Run the full test suite (project default):
+- Run the full test suite:
 
 ```bash
 npm test
 ```
 
-Both commands use the project's existing Mocha + nyc configuration as defined in `package.json`.
+---
 
-Notes for maintainers
----------------------
-- Controller behavior: `src/controllers/topics.js` attaches `p.roleLabel` for posts. If future user-role logic changes, ensure `getRoleLabel(uid)` remains in sync with the permission/group APIs used to determine role membership.
-- Template: the theme/template already contains conditional rendering for `posts.roleLabel` and `posts.user.roleLabel`. If you change template structure or class names, update the test accordingly.
+## **Section 3 – “Unanswered” Quick Link and Filter Feature (Lisa Huang)**
 
-Contact / Further changes
--------------------------
-If you'd like, I can:
-- Convert the test to render the actual template to provide end-to-end verification.
-- Expand the test to include more role variants.
-- Add automated tests that confirm the controller populates `roleLabel` across a set of real user-role combinations (integration tests against the database mock).
+### Overview
+This feature adds an **“Unanswered”** quick-access link and filter to NodeBB.  
+It helps forum users and moderators easily view topics with **no replies**, improving engagement and visibility of overlooked discussions.
 
-Thank you — let me know which option you'd like next and I'll add it.
+This feature was added in two templates:
+
+1. **`header.tpl`** — Adds a *Quick Access Button* for unanswered topics at the top of the home page.  
+2. **`recent.tpl`** — Adds *Filter Pills* (“All” and “Unanswered”) on the “Recent Topics” page for quick filtering.
+
+---
+
+### Feature Details
+
+#### 1. “Unanswered” Quick Link in Header
+
+- Appears on home page, aligned to the **top-right corner** of the main content area.  
+- Button label: **“Unanswered”**  
+
+**Purpose:**  
+Provides users and moderators an immediate way to access unanswered discussions from home page of the forum.
+
+---
+
+#### 2. “Unanswered” Filter Pills in Recent Topics
+
+- Added a new **filter bar** above the topic list.  
+- Includes two pills:  
+  - **All:** `/recent`  
+  - **Unanswered:** `/recent?filter=unreplied`  
+- Appears with the label **“Filter:”** followed by clickable buttons.
+
+**Purpose:**  
+Allows users to toggle between viewing all topics and only unanswered ones without needing to navigate away.
+
+---
+
+### User Testing Instructions
+
+You can test this feature manually in your local NodeBB instance:
+
+1. **Start NodeBB**  
+   Run the project locally and open your forum.
+
+2. **Navigate to Recent Topics** (`/recent`)
+
+3. **Verify:**
+   - The **filter bar** appears with “All” and “Unanswered” buttons.  
+   - Clicking **Unanswered** updates the page URL to `/recent?filter=unreplied` and displays only topics without replies.
+   - From the home page (the inital page when you open the port link), look at the **top-right corner** of the header:  
+     - You should see a yellow “Unanswered” button.  
+     - Clicking it should take you to the same filtered view (`/recent?filter=unreplied`).
+
+**Expected Behavior:**  
+Both the header button and the recent page filter pills link to the same destination and correctly display unanswered topics.
+
+---
+
+### Automated Tests
+
+**File Location:**  
+`test/recent-unanswered.test.js`
+
+**Test Description:**
+
+| Test | Purpose |
+|------|----------|
+| `should render the Unanswered filter pills in recent.tpl` | Ensures that the Recent Topics template correctly renders the filter for unanswered |
+| `should render the Unanswered quick link in header.tpl` | Verifies that the Header template correctly renders the “Unanswered” button and correct link path |
+
+---
+
+### Test Coverage and Rationale
+
+These tests confirm:
+
+- The presence of new UI elements introduced by this feature.  
+- The correct links (`/recent?filter=unreplied`) exist and are consistent between templates.  
+- The templates compile successfully with dummy data.
+
+Because these are static template changes without dynamic logic or API calls, these tests are sufficient for full coverage.  
+They ensure:
+- The new elements render properly.  
+- No syntax or template rendering errors occur.
+
+---
+
+## **Section 4 – [Feature Placeholder: Member 4]**
+
+---
+
+## **Section 5 – [Feature Placeholder: Member 5]**
