@@ -13,7 +13,83 @@ Include: (look on website for details on what to write)
 
 ---
 
-## **Section 2 – [Feature Placeholder: Member 2]**
+## **Section 2 – Post Author Role Labels (Michael Yan)**
+
+Overview
+--------
+This change ensures a role label (e.g. Instructor, TA, Student) is attached to each post's author data and rendered next to the author's display name in topic pages. The goal is to make role information visible in the UI and to add a small, focused frontend test that protects against regressions in how the role label is rendered and displayed.
+
+Manual usage and testing (user-facing)
+--------------------------------------
+These steps let you manually confirm the feature in a running NodeBB instance.
+
+1. Start the application
+   - Start NodeBB locally as you normally would.
+     ```bash
+     npm start
+     ```
+   - Ensure your dev environment (database, redis) is running.
+
+2. Create or identify users with different roles
+   - Instructor / administrator: register a user and give them Administrator privileges via the admin panel, or use an existing admin account.
+   - TA / moderator: create or use a user assigned to a moderator or TA-like group (global moderator or group with moderator privileges).
+   - Student: use any normal (non-admin, non-moderator) account.
+
+3. Create a topic and posts
+   - Log in as different users and post replies to a topic so multiple posts have different authors and roles.
+
+4. Open the topic page
+   - Navigate to the topic in the browser.
+   - For each post, look at the post header (next to the display name). You should see a small label in parentheses after the author's displayname, such as:
+     - (Instructor)
+     - (TA)
+     - (Student)
+
+5. Verify tolerant rendering for TA labels
+   - The backend attaches an explicit `roleLabel` value (e.g. `TA`) but the frontend test is tolerant to multiple common forms (parentheses, punctuation, case). In the UI you should see a human-readable label; the exact label text will match templates/theme formatting.
+
+Quick smoke tests (manual checks)
+- Admin/Instructor post should show an Instructor label next to their display name.
+- Moderator/TA user posts should show a TA or TA-like label.
+- Regular user posts should show Student (or the fallback).
+- Remove role or change user role and reload the topic to see the label update.
+
+Automated tests
+---------------
+I added one focused frontend unit test that validates the role label rendering behavior.
+
+Test location
+- `test/topic-role-labels.js` — New Mocha test.
+
+What the test checks
+- Uses JSDOM + jQuery (consistent with other tests in `test/`) to create a small DOM snippet that simulates the topic post header.
+- Ensures a span with class `.role-label` exists immediately after the author display name.
+- Normalizes the role text (removes parentheses and non-alphanumeric characters and lowercases) and asserts that it maps to a general category:
+  - TA-like: `ta`, `teachingassistant`, `assistant` (multiple forms accepted)
+  - Student: `student`
+  - Instructor: `instructor`, `prof`, `teacher`
+  - Unknown labels (e.g. `(unknown)`) must not match any known roles
+
+Why this test is sufficient for the change
+- The essential risk introduced by the controller change is: templates must correctly display the role label attached to posts. The test verifies that the rendered markup contains a `.role-label` immediately after the displayname and that the label text contains an expected role keyword even if formatted in various ways. This is a focused smoke test to prevent regressions where the role label is dropped, mis-positioned, or rendered empty.
+
+Limitations and suggested extensions
+- The test uses a handcrafted DOM snippet rather than rendering the theme/template end-to-end. This makes it fast and robust, but not strictly end-to-end.
+- Add more role synonyms to the test for expect additional variations (e.g., `t.a.`, `teaching-assistant`, `lab-ta`).
+
+How to run the automated test(s)
+
+- Run only the new test file:
+
+```bash
+npm test -- test/topic-role-labels.js
+```
+
+- Run the full test suite:
+
+```bash
+npm test
+```
 
 ---
 
