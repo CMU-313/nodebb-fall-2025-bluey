@@ -10,10 +10,13 @@ plugin.init = async function (params) {
     
     console.log('[composer-suggestions] LIBRARY ACTIVE called');
     
-    router.get('/api/composer-suggestions/:title', middleware.ensureLoggedIn, async (req, res) => {
+    router.get('/api/composer-suggestions/:title?', middleware.ensureLoggedIn, async (req, res) => {
         try {
-            const title = req.params.title.toLowerCase();
+            const title = (req.params.title || '').trim().toLowerCase();
 
+            if (!title) {
+                return res.json({ suggestions: [] });
+            }
             const tids = await db.getSortedSetRange('topics:tid', 0, -1);
 
             const topics = await Promise.all(tids.map(async tid => { // fetch topic objects and filter by title match

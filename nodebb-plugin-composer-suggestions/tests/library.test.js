@@ -64,5 +64,13 @@ describe('Composer Suggestions Plugin (Backend)', function () {
         console.log('Similar Suggestions:', res.body.suggestions);
     });
 
+    it('should safely return an empty array when no title is provided', async function () {
+        const res = await request(app).get('/api/composer-suggestions/');
+        assert.strictEqual(res.status, 200);
+        assert.ok(Array.isArray(res.body.suggestions), 'suggestions should be an array');
+        assert.strictEqual(res.body.suggestions.length, 0, 'should return empty suggestions list for empty title');
+        console.log('Empty title handled safely: ', res.body.suggestions);
+    });
+
 });
 
