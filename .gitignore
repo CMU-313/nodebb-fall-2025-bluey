@@ -67,6 +67,7 @@ coverage
 *.log
 test/files/normalise.jpg.png
 test/files/normalise-resized.jpg
+/test/unanswered.filter.test.js
 package-lock.json
 /package.json
 *.mongodb

@@ -44,6 +44,18 @@
 					</div>
 
 					<a class="fw-bold text-nowrap text-truncate" href="{{{ if ./user.userslug }}}{config.relative_path}/user/{./user.userslug}{{{ else }}}#{{{ end }}}" data-username="{posts.user.username}" data-uid="{posts.user.uid}">{posts.user.displayname}</a>
+
+					<!-- ===== Role label: backend value if present, else default to (Student) ===== -->
+					{{{ if posts.roleLabel }}}
+						<span class="ms-1 role-label">({posts.roleLabel})</span>
+					{{{ else }}}
+						{{{ if posts.user.roleLabel }}}
+							<span class="ms-1 role-label">({posts.user.roleLabel})</span>
+						{{{ else }}}
+							<span class="ms-1 role-label">(Student)</span>
+						{{{ end }}}
+					{{{ end }}}
+					<!-- ====================================================================== -->
 				</div>
 
 				{{{ each posts.user.selectedGroups }}}
@@ -89,10 +101,10 @@
 			<div component="post/signature" data-uid="{posts.user.uid}" class="text-xs text-muted mt-2">{posts.user.signature}</div>
 			{{{ end }}}
 
-			<div class="d-flex flex-wrap-reverse gap-2 {{{ if (hideReplies || !posts.replies.count) }}}justify-content-end{{{ else }}}justify-content-between{{{ end }}}">
+			<div class="d-flex flex-wrap-reverse gap-2 {{{ if (hideReplies || !posts.replies.count) }}}justify-content-end{{{ else }}}justify-content-between{{{ end }}}}">
 				{{{ if !hideReplies }}}
-				<a component="post/reply-count" data-target-component="post/replies/container" href="#" class="d-flex gap-2 align-items-center btn btn-ghost ff-secondary border rounded-1 p-1 text-muted text-decoration-none text-xs {{{ if (!./replies || shouldHideReplyContainer(@value)) }}}hidden{{{ end }}}">
-					<span component="post/reply-count/avatars" class="d-flex gap-1 {{{ if posts.replies.hasMore }}}hasMore{{{ end }}}">
+				<a component="post/reply-count" data-target-component="post/replies/container" href="#" class="d-flex gap-2 align-items-center btn btn-ghost ff-secondary border rounded-1 p-1 text-muted text-decoration-none text-xs {{{ if (!./replies || shouldHideReplyContainer(@value)) }}}hidden{{{ end }}}}">
+					<span component="post/reply-count/avatars" class="d-flex gap-1 {{{ if posts.replies.hasMore }}}hasMore{{{ end }}}}">
 						{{{each posts.replies.users}}}
 						<span>{buildAvatar(posts.replies.users, "20px", true, "avatar-tooltip")}</span>
 						{{{end}}}

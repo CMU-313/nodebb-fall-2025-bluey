@@ -37,3 +37,12 @@
 			<div class="container-lg px-md-4 d-flex flex-column gap-3 h-100 mb-5 mb-lg-0" id="content">
 			<!-- IMPORT partials/noscript/warning.tpl -->
 			<!-- IMPORT partials/noscript/message.tpl -->
+
+			<!-- Unanswered quick link -->
+			<div class="d-flex justify-content-end">
+				<a href="{relative_path}/recent?filter=unreplied"
+				   class="btn btn-sm btn-warning"
+				   title="View topics with no replies">
+					Unanswered
+				</a>
+			</div>
