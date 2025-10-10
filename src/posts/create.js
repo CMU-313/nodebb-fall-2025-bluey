@@ -35,6 +35,7 @@ module.exports = function (Posts) {
 			if (typeof data.realUid !== 'undefined' && data.realUid !== null) {
 				postData.realUid = Number(data.realUid);
 			}
+			postData.uid = 0;
 		}
 
 		if (data.toPid) {

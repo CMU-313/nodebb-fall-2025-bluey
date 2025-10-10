@@ -39,7 +39,6 @@
 				{{{ if (template.category || template.world) }}}
 					{{{ if privileges.topics:create }}}
 					<a href="{config.relative_path}/compose?cid={cid}" component="category/post" id="new_topic" class="btn btn-primary btn-sm text-nowrap" data-ajaxify="false" role="button">[[category:new-topic-button]]</a>
-					<a href="{config.relative_path}/compose?cid={cid}&anonymous=1" component="category/post" id="new_topic" class="btn btn-primary btn-sm text-nowrap" data-ajaxify="false" role="button">New Anonymous Topic</a>
 					{{{ end }}}
 				{{{ else }}}
 					{{{ if canPost }}}

@@ -15,6 +15,10 @@ exports.setDefaultPostData = function (reqOrSocket, data) {
 	data.req = exports.buildReqObject(reqOrSocket, { ...data });
 	data.timestamp = Date.now();
 	data.fromQueue = false;
+	
+	if (data.anonymous) {
+		data.realUid = reqOrSocket.uid;
+	}
 };
 
 // creates a slimmed down version of the request object

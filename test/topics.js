@@ -2506,6 +2506,237 @@ describe('Topic\'s', () => {
 			assert(!score);
 		});
 	});
+
+	describe('Anonymous Posts', () => {
+		let regularUid;
+		let moderatorUid;
+		let testCategoryId;
+
+		before(async () => {
+			regularUid = await User.create({ username: 'regular-user', password: '123456' });
+			moderatorUid = await User.create({ username: 'moderator', password: '123456' });
+			
+			const testCategory = await categories.create({
+				name: 'Anonymous Test Category',
+				description: 'Category for testing anonymous posts',
+			});
+			testCategoryId = testCategory.cid;
+			
+			await groups.join('Global Moderators', moderatorUid);
+		});
+
+		it('should create anonymous topic with realUid', async () => {
+			const topicData = await apiTopics.create({ uid: regularUid }, {
+				title: 'Anonymous Topic Test',
+				content: 'This is an anonymous topic',
+				cid: testCategoryId,
+				anonymous: true,
+			});
+
+			assert(topicData);
+			assert.strictEqual(topicData.anonymous, 'true'); // Stored as string in DB
+			
+			// Get the main post
+			const mainPost = await posts.getPostData(topicData.mainPid);
+			assert.strictEqual(mainPost.anonymous, 'true'); // Stored as string in DB
+			assert.strictEqual(parseInt(mainPost.realUid, 10), regularUid);
+			assert.strictEqual(parseInt(mainPost.uid, 10), 0); // Should be set to 0 for anonymous posts
+		});
+
+		it('should create anonymous reply with realUid', async () => {
+			const topicData = await apiTopics.create({ uid: regularUid }, {
+				title: 'Topic for Anonymous Reply',
+				content: 'Normal topic content',
+				cid: testCategoryId,
+			});
+
+			const replyData = await apiTopics.reply({ uid: regularUid }, {
+				tid: topicData.tid,
+				content: 'This is an anonymous reply',
+				anonymous: true,
+			});
+
+			assert(replyData);
+			
+			// Get the raw post data to check if anonymous fields are stored
+			const rawPostData = await posts.getPostData(replyData.pid);
+			assert.strictEqual(rawPostData.anonymous, 'true'); // Stored as string in DB
+			assert.strictEqual(parseInt(rawPostData.realUid, 10), regularUid);
+			assert.strictEqual(parseInt(rawPostData.uid, 10), 0);
+		});
+
+		it('should show anonymous user info to regular users', async () => {
+			// Create anonymous post
+			const topicData = await apiTopics.create({ uid: regularUid }, {
+				title: 'Anonymous Topic',
+				content: 'Anonymous content',
+				cid: testCategoryId,
+				anonymous: true,
+			});
+
+			// Get the raw post data and test the anonymous user info function directly
+			const rawPost = await posts.getPostData(topicData.mainPid);
+			rawPost.cid = testCategoryId; // Add cid for the function
+			
+			await posts.addUserInfoToAnonymousPosts([rawPost], regularUid);
+			
+			assert(rawPost);
+			assert(rawPost.isAnonymousToViewer);
+			assert.strictEqual(rawPost.user.username, '[[global:anonymous]]');
+		});
+
+		it('should show real identity to moderators', async () => {
+			// Create anonymous post
+			const topicData = await apiTopics.create({ uid: regularUid }, {
+				title: 'Anonymous Topic for Mod View',
+				content: 'Anonymous content',
+				cid: testCategoryId,
+				anonymous: true,
+			});
+
+			// Get the raw post data and test the anonymous user info function directly
+			const rawPost = await posts.getPostData(topicData.mainPid);
+			rawPost.cid = testCategoryId; // Add cid for the function
+			
+			await posts.addUserInfoToAnonymousPosts([rawPost], moderatorUid);
+			
+			assert(rawPost);
+			assert(!rawPost.isAnonymousToViewer);
+			assert(rawPost.showingRealIdentity);
+			// Should show real username for moderators
+			assert.notStrictEqual(rawPost.user.username, '[[global:anonymous]]');
+		});
+
+		it('should show real identity to administrators', async () => {
+			// Create anonymous post
+			const topicData = await apiTopics.create({ uid: regularUid }, {
+				title: 'Anonymous Topic for Admin View',
+				content: 'Anonymous content',
+				cid: testCategoryId,
+				anonymous: true,
+			});
+
+			// Get the raw post data and test the anonymous user info function directly
+			const rawPost = await posts.getPostData(topicData.mainPid);
+			rawPost.cid = testCategoryId; // Add cid for the function
+			
+			await posts.addUserInfoToAnonymousPosts([rawPost], adminUid);
+			
+			assert(rawPost);
+			assert(!rawPost.isAnonymousToViewer);
+			assert(rawPost.showingRealIdentity);
+		});
+
+		it('should handle non-anonymous posts correctly', async () => {
+			// Create regular (non-anonymous) post
+			const topicData = await apiTopics.create({ uid: regularUid }, {
+				title: 'Regular Topic',
+				content: 'Regular content',
+				cid: testCategoryId,
+				anonymous: false,
+			});
+
+			// Get the raw post data
+			const rawPost = await posts.getPostData(topicData.mainPid);
+			rawPost.cid = testCategoryId;
+			
+			// Test that non-anonymous posts are not affected
+			await posts.addUserInfoToAnonymousPosts([rawPost], regularUid);
+			
+			assert(rawPost);
+			assert.notEqual(rawPost.anonymous, 'true');
+			assert.notEqual(rawPost.uid, '0');
+		});
+
+		it('should handle null/undefined uid properly', async () => {
+			// Create anonymous post
+			const topicData = await apiTopics.create({ uid: regularUid }, {
+				title: 'Anonymous Topic for Edge Case',
+				content: 'Anonymous content',
+				cid: testCategoryId,
+				anonymous: true,
+			});
+
+			const rawPost = await posts.getPostData(topicData.mainPid);
+			rawPost.cid = testCategoryId;
+			
+			// Test with null uid (guest user)
+			await posts.addUserInfoToAnonymousPosts([rawPost], null);
+			
+			assert(rawPost);
+			assert(rawPost.isAnonymousToViewer);
+			assert.equal(rawPost.uid, '0');
+		});
+
+		it('should preserve realUid in database for anonymous posts', async () => {
+			// Create anonymous topic
+			const topicData = await apiTopics.create({ uid: regularUid }, {
+				title: 'Anonymous Topic for DB Check',
+				content: 'Anonymous content',
+				cid: testCategoryId,
+				anonymous: true,
+			});
+
+			// Check database directly
+			const dbPost = await posts.getPostData(topicData.mainPid);
+			assert.equal(dbPost.anonymous, 'true', 'Post should be marked as anonymous in DB');
+			assert.equal(dbPost.uid, '0', 'Post uid should be 0 in DB');
+			assert.equal(dbPost.realUid, String(regularUid), 'realUid should be preserved in DB');
+
+			// Check topic data as well
+			const dbTopic = await topics.getTopicData(topicData.tid);
+			assert.equal(dbTopic.anonymous, 'true', 'Topic should be marked as anonymous in DB');
+			assert.equal(dbTopic.uid, '0', 'Topic uid should be 0 in DB');
+			assert.equal(dbTopic.realUid, String(regularUid), 'Topic realUid should be preserved in DB');
+		});
+
+		it('should handle anonymous replies correctly', async () => {
+			// Create a regular topic first
+			const topicData = await apiTopics.create({ uid: regularUid }, {
+				title: 'Regular Topic for Anonymous Reply',
+				content: 'Regular content',
+				cid: testCategoryId,
+				anonymous: false,
+			});
+
+			// Create anonymous reply
+			const replyData = await apiTopics.reply({ uid: regularUid }, {
+				tid: topicData.tid,
+				content: 'Anonymous reply content',
+				anonymous: true,
+			});
+
+			// Check reply data
+			const dbReply = await posts.getPostData(replyData.pid);
+			assert.equal(dbReply.anonymous, 'true', 'Reply should be marked as anonymous');
+			assert.equal(dbReply.uid, '0', 'Reply uid should be 0');
+			assert.equal(dbReply.realUid, String(regularUid), 'Reply realUid should be preserved');
+		});
+
+		it('should create anonymous topics via the composer API', async () => {
+			// Test the exact same API endpoint that the composer would use
+			const topicData = await apiTopics.create({ uid: regularUid }, {
+				title: 'Anonymous Topic via Composer',
+				content: 'This topic was created anonymously via the composer',
+				cid: testCategoryId,
+				anonymous: true,
+			});
+
+			// Verify the topic was created with anonymous properties
+			const dbTopic = await topics.getTopicData(topicData.tid);
+			assert.equal(dbTopic.anonymous, 'true', 'Topic should be marked as anonymous');
+			assert.equal(dbTopic.uid, '0', 'Topic uid should be 0');
+			assert.equal(dbTopic.realUid, String(regularUid), 'Topic realUid should be preserved');
+
+			// Verify the main post has anonymous properties
+			const dbPost = await posts.getPostData(topicData.mainPid);
+			assert.equal(dbPost.anonymous, 'true', 'Main post should be marked as anonymous');
+			assert.equal(dbPost.uid, '0', 'Main post uid should be 0');
+			assert.equal(dbPost.realUid, String(regularUid), 'Main post realUid should be preserved');
+
+			console.log('Anonymous topic composer functionality verified');
+		});
+	});
 });
 
 describe('Topics\'', async () => {

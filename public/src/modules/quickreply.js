@@ -61,10 +61,12 @@ define('quickreply', [
 			}
 
 			const replyMsg = components.get('topic/quickreply/text').val();
+			const anonymous = document.getElementById('quickreply-anonymous')?.checked || false;
 			const replyData = {
 				tid: ajaxify.data.tid,
 				handle: undefined,
 				content: replyMsg,
+				anonymous: anonymous,
 			};
 			const replyLen = replyMsg.length;
 			if (replyLen < parseInt(config.minimumPostLength, 10)) {
@@ -116,10 +118,12 @@ define('quickreply', [
 			e.preventDefault();
 			storage.removeItem(qrDraftId);
 			const textEl = components.get('topic/quickreply/text');
+			const anonymous = document.getElementById('quickreply-anonymous')?.checked || false;
 			hooks.fire('action:composer.post.new', {
 				tid: ajaxify.data.tid,
 				title: ajaxify.data.titleRaw,
 				body: textEl.val(),
+				anonymous: anonymous,
 			});
 			textEl.val('');
 		});

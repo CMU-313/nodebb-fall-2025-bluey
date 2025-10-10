@@ -41,21 +41,6 @@ postsAPI.get = async function (caller, data) {
 	if (post.deleted && !(userPrivilege.isAdminOrMod || selfPost)) {
 		post.content = '[[topic:post-is-deleted]]';
 	}
-
-	if (post.anonymous) {
-		const isPrivileged = userPrivilege.isAdminOrMod || 
-		(caller.uid && parseInt(caller.uid, 10) === Number(post.realUid));
-		if (!isPrivileged) {
-			post.uid = 0;
-			post.user = {
-				uid: 0,
-				displayname: 'Guest',
-			};
-			delete post.username;
-			delete post.userslug;
-			delete post.picture;
-		}
-	}
 	
 	return post;
 };
@@ -79,24 +64,6 @@ postsAPI.getSummary = async (caller, { pid }) => {
 
 	const postsData = await posts.getPostSummaryByPids([pid], caller.uid, { stripTags: false });
 	posts.modifyPostByPrivilege(postsData[0], topicPrivileges);
-	try {
-		const post = postsData[0];
-		if (post && post.anonymous) {
-			const isPrivileged = topicPrivileges.isAdminOrMod || (caller.uid && Number(caller.uid) === Number(post.realUid));
-			if (!isPrivileged) {
-				post.uid = 0;
-				post.user = {
-					uid: 0,
-					displayname: 'Guest',
-				};
-				delete post.username;
-				delete post.userslug;
-				delete post.picture;
-			}
-		}
-	} catch (err) {
-		// ignore
-	}
 	return postsData[0];
 };
 
