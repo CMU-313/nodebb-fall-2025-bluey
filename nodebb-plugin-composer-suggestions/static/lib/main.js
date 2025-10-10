@@ -1,6 +1,6 @@
 'use strict';
 
-define('composer-suggestions/main', [], function () {
+define('composer-suggestions/main', ['jquery', 'components'], function ($, components) {
     console.log('[composer-suggestions] main.js entered');
     const Suggestions = {};
 

@@ -10,7 +10,12 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "chai": "^6.2.0",
+    "jquery": "^3.7.1",
+    "jsdom": "^27.0.0",
+    "jsdom-global": "^3.0.2",
     "mocha": "^11.7.4",
+    "sinon": "^21.0.0",
     "supertest": "^7.1.4"
   }
 }
