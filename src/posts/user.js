@@ -56,6 +56,79 @@ module.exports = function (Posts) {
 		return hookResult.users;
 	};
 
+	Posts.addUserInfoToAnonymousPosts = async function (postData, uid) {
+		if (!Array.isArray(postData)) {
+			postData = [postData];
+		}
+
+		const anonymousPosts = postData.filter(post => post && post.anonymous);
+		if (anonymousPosts.length === 0) {
+			return Array.isArray(arguments[0]) ? postData : postData[0];
+		}
+
+		const [isAdmin, isModerator] = await Promise.all([
+			user.isAdministrator(uid),
+			user.isModerator(uid, anonymousPosts.map(p => p.cid)),
+		]);
+
+		const canViewRealIdentity = isAdmin || isModerator.some(Boolean);
+
+		if (canViewRealIdentity) {
+			// Get real user data for mods/admins
+			const realUids = anonymousPosts.map(post => post.realUid).filter(Boolean);
+			const realUserData = realUids.length > 0 ? await Posts.getUserInfoForPosts(realUids, uid) : [];
+			const realUserMap = {};
+			realUserData.forEach((userData) => {
+				if (userData) {
+					realUserMap[userData.uid] = userData;
+				}
+			});
+
+			postData.forEach((post) => {
+				if (post && post.anonymous) {
+					if (post.realUid && realUserMap[post.realUid]) {
+						// Show real user info with anonymous indicator
+						post.user = realUserMap[post.realUid];
+						post.isAnonymousToViewer = false;
+						post.showingRealIdentity = true;
+					} else {
+						// Fallback to anonymous display if real user data unavailable
+						post.user = createAnonymousUserInfo();
+						post.isAnonymousToViewer = true;
+						post.showingRealIdentity = false;
+					}
+				}
+			});
+		} else {
+			// For regular users, show anonymous user info
+			postData.forEach((post) => {
+				if (post && post.anonymous) {
+					post.user = createAnonymousUserInfo();
+					post.isAnonymousToViewer = true;
+					post.showingRealIdentity = false;
+				}
+			});
+		}
+
+		return Array.isArray(arguments[0]) ? postData : postData[0];
+	};
+
+	function createAnonymousUserInfo() {
+		return {
+			uid: 0,
+			username: '[[global:anonymous]]',
+			userslug: '',
+			picture: '',
+			'icon:text': '?',
+			'icon:bgColor': '#aaa',
+			displayname: '[[global:anonymous]]',
+			fullname: '',
+			signature: '',
+			banned: false,
+			status: 'offline',
+		};
+	}
+
 	Posts.overrideGuestHandle = function (postData, handle) {
 		if (meta.config.allowGuestHandles && postData && postData.user && parseInt(postData.uid, 10) === 0 && handle) {
 			postData.user.username = validator.escape(String(handle));

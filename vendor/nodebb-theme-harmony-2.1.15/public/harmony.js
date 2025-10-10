@@ -295,4 +295,5 @@ $(document).ready(function () {
 		mainNavEl.on('shown.bs.dropdown', toggleOverflow)
 			.on('hidden.bs.dropdown', toggleOverflow);
 	}
+
 });

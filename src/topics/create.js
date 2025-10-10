@@ -37,6 +37,13 @@ module.exports = function (Topics) {
 			viewcount: 0,
 		};
 
+		// Add anonymous field to topic if it's an anonymous post
+		if (data.anonymous) {
+			topicData.anonymous = true;
+			topicData.realUid = data.realUid || data.uid;
+			topicData.uid = 0;
+		}
+
 		if (Array.isArray(data.tags) && data.tags.length) {
 			topicData.tags = data.tags.join(',');
 		}
@@ -244,6 +251,7 @@ module.exports = function (Topics) {
 			posts.getPostSummaryByPids([pid], uid, {}),
 			posts.getUserInfoForPosts([postOwner], uid),
 		]);
+
 		await Promise.all([
 			Topics.addParentPosts([postData], uid),
 			Topics.syncBacklinks(postData),
