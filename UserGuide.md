@@ -290,4 +290,6 @@ These tests ensure the API route behaves predictably regardless of input or back
 - They confirm that the output schema is consistent for the frontend consumer.
 ---
 
-## **Section 5 – [Feature Placeholder: Member 5]**
+## **Section 5 – [Show Password Toggle button: Luciana Requena]**
+
+
