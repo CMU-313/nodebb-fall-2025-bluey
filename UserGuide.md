@@ -181,7 +181,24 @@ They ensure:
 
 ---
 
-## **Section 4 – [Feature Placeholder: Member 4]**
+## **Section 4 – [Composer Suggestions Feature: Diana Cano]**
+
+### Overview
+This feature adds a **“Composer Suggestions”** functionality to NodeBB.  
+It helps users by providing **real-time topic suggestions** while they type a post title, reducing duplicate topics and increasing engagement.
+
+
+---
+
+### Feature Details
+
+
+**Purpose:**  
+Provides users with immediate feedback on existing discussions relevant to their post, helping avoid duplicate topics.
+
+---
+
+### User Testing Instructions
 
 ---
 
