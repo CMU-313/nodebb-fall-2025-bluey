@@ -181,8 +181,113 @@ They ensure:
 
 ---
 
-## **Section 4 – [Feature Placeholder: Member 4]**
+## **Section 4 – [Composer Suggestions Feature: Diana Cano]**
 
+### Overview
+This feature adds a **“Composer Suggestions”** functionality to NodeBB. Extending the existing composer interface, it helps users by providing real-time topic suggestions as they type a new post's title. By showing similarly titled topics, this feature hopes to reduce duplicate topics.
+
+This feature was implemented in:
+1. **`static/lib/main.js`** – Frontend logic that listens to composer activity and displays live topic suggestions.  
+2. **`library.js`** – Backend API route that searches the database for topic titles matching the user’s input.
+
+Test files:
+1. **`tests/main.test.js`** — Contains automated frontend tests verifying the rendering and behavior of the suggestions interface.
+2. **`tests/library.test.js`** — Tests the results of searching the database for matching title.
+
+---
+
+### Feature Details
+#### 1. Suggestions Container in Composer
+
+- Activated when a user opens the **composer** (post creation window). 
+- Appears **beneath the title input field** in the composer.  
+- Displays a list of clickable **related topic titles**.  
+- Updates automatically as the user types.  
+- Falls back to “No similar topics found.” if no matches are returned.
+
+
+##### **Example UI Behavior:**
+Title: Example Question #
+Suggested Topics:
+- Example Question #1
+- Example Question #2
+- Example Question #3
+
+**Purpose:**  
+Enhances the user experience by preventing duplicate topics and allowing users to find what they are looking for.
+
+---
+
+### User Testing Instructions
+You can test this feature manually on your local NodeBB instance.
+
+#### Steps to Test Functionality
+
+1. Ensure Plugin is installed correctly
+   - cd into **nodebb-plugin-composer-suggestions** plugin folder (‘cd nodebb-plugin-composer-suggestions’) and run the command ‘npm link’.
+   - Then at the root of NodeBB run the command ‘npm link nodebb-plugin-composer-suggestions’.
+2. Update Nodebb
+   - Run the command ‘./nodebb build’ to ensure the plugin is installed
+3. Start NodeBB locally and activate plugin.
+   - In the Admin view of NodeBB, go to **Extend** tab and click on **Plugins**.
+   - Locate the **nodebb-plugin-composer-suggestions** plugin and install/activate it.
+   - Restart NodeBB
+4. Navigate to “New Topic.”
+   - Open the composer by creating a new post.
+5. Type into the Title Field.
+   - Begin typing part of an existing topic title
+6. Verify:
+   - A “Suggested Topics” section appears below the title field.
+   - Up to 5 suggestions are shown, each linking to an existing topic.
+   - If no similar topics exist, you’ll see “No similar topics found.”
+
+#### Expected Behavior:
+- Suggestions load dynamically as you type with some buffer (debounce).
+
+- Suggestions disappear if the input is cleared/there are no existing matching topics.
+
+- All suggestion links redirect to valid topic pages.
+
+---
+### Automated Tests
+
+**File Locations:**  
+| Test | Purpose |
+|------|----------|
+| ``test/main.test.js`| Tests the composer UI behavior and live suggestion rendering|
+| ``test/library.test.js`` | Tests the suggestion API logic and database interaction |
+
+
+
+**Test Description:**
+**test/library.test.js**
+| Test | Purpose |
+|------|----------|
+| `should return empty list when given a unique title` | Confirms the endpoint returns an empty result for unmatched queries. |
+| `should return filtered suggestions that match the query` | Ensures returned topics contain the searched term.|
+| `should safely return an empty array when no title is provided` | Validates safe handling of empty or missing titles.|
+
+
+**test/main.test.js**
+| Test | Purpose |
+|------|----------|
+| `should render suggestions when the composer is loaded` | Ensures the plugin listens to ‘action:composer.loaded’, queries the API, and renders suggestion links. |
+
+---
+### Test Coverage and Rationale
+These tests confirm:
+
+- This feature’s introduced UI’s elements (Front end’s appearance & Back end)
+- Proper creation of the suggestion container. 
+- Correct DOM manipulation and API integration behavior.
+- API routing and middleware integration.
+- Error-free handling of edge cases (empty or invalid input).
+
+These tests ensure the API route behaves predictably regardless of input or backend conditions.
+
+- They prevent regressions like unhandled rejections, missing suggestions, or malformed data.
+
+- They confirm that the output schema is consistent for the frontend consumer.
 ---
 
 ## **Section 5 – [Feature Placeholder: Member 5]**
