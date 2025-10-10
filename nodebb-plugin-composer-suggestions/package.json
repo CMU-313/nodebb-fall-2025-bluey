@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "library.js",
   "scripts": {
-    "test": "mocha tests"
+    "test": "mocha tests/**/*.test.js --require jsdom-global/register --timeout 5000"
   },
   "keywords": [],
   "author": "",
