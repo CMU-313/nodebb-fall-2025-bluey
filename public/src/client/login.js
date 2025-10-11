@@ -119,10 +119,10 @@ define('forum/login', ['hooks', 'translator', 'jquery-form'], function (hooks, t
 		}
 
 
-		(function() {
-			const showPasswordExists = true; 
-			console.log('Show Password button exists:', showPasswordExists);
-		})();
+		// (function () {
+		// 	const showPasswordExists = true; 
+		// 	console.log('Show Password button exists:', showPasswordExists);
+		// })();
 	};
 
 	return Login;
