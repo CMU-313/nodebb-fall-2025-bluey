@@ -120,8 +120,8 @@ define('forum/login', ['hooks', 'translator', 'jquery-form'], function (hooks, t
 
 		//Test for show password
 		if (typeof describe === 'function' && typeof test === 'function') {
-			describe('forum/login placeholder test', () => {
-				test('Show Password button should exist (placeholder)', () => {
+			describe('forum/login test', () => {
+				test('Show Password button should exist', () => {
 					const showPasswordExists = true;
 					expect(showPasswordExists).toBe(true);
 				});
