@@ -5,11 +5,45 @@ Each section describes a specific feature, its purpose, how to use or test it, a
 
 ---
 
-## **Section 1 – [Feature Placeholder: Member 1]**
-Include: (look on website for details on what to write)
-- Purpose and functionality overview  
-- Steps for using/testing  
-- Automated test details
+## **Section 1 – User Post Anonymously Ability (Sam Curry)**
+
+Overview
+--------
+
+This change creates checkboxes for new topics and replies that allows a user to post the topic/reply anonymously. The topic/reply will not show the username or profile picture of the posting user, except for moderators or administrators, who are able see who posted the topic/reply. This provides users with an option to ask questions they may not feel comfortable having their name attached to, while still allowing moderators and administrators to enforce site guidelines.
+
+Manual User Testing
+-------------------
+1. Start NodeBB
+2. Log in as a registered user
+3. Open a discussion board
+4. Select the blue "New Topic" button
+5. Write a title and description for the new topic
+6. Select the checkbox titled "Post Anonymously"
+7. Select "Submit"
+8. The new topic should not have your username or profile picture associated with it
+9. Type text in the reply box under the topic
+10. Select the checkbox titled "Post Anonymously"
+11. Select "Quick Reply"
+12. The reply should not have your username or profile picture associated with it
+
+Quick smoke tests
+1. Moderators and Admins should be able to see users who post anonymously
+2. Leaving the page and coming back will still show users as anonymous if they posted anonymously
+3. Posting not anonymously under an anonymous topic/reply should not make the post anonymous
+
+Automated Testing
+-----------------
+Test Location: /test/topics.js
+
+Run tests in terminal with: npm test -- test/topics.js
+
+Tests check for multiple aspects:
+1. Ensure the core functionality of anonymous posting works
+2. Ensure that moderators and administrators can still see the true identities of users
+3. Ensure that non anonymous posts are unaffected
+4. Ensure that API endpoints work and both the frontend and backend handle anonymous data correctly
+5. Cover edge cases such as guest users
 
 ---
 
