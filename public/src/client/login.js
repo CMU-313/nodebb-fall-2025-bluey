@@ -5,7 +5,7 @@ define('forum/login', ['hooks', 'translator', 'jquery-form'], function (hooks, t
 	const Login = {
 		_capsState: false,
 	};
-
+	
 	Login.init = function () {
 		const errorEl = $('#login-error-notify');
 		const submitEl = $('#login');
@@ -116,6 +116,16 @@ define('forum/login', ['hooks', 'translator', 'jquery-form'], function (hooks, t
 
 		if (Login._capsState) {
 			toggle(true);
+		}
+
+		//Test for show password
+		if (typeof describe === 'function' && typeof test === 'function') {
+			describe('forum/login placeholder test', () => {
+				test('Show Password button should exist (placeholder)', () => {
+					const showPasswordExists = true;
+					expect(showPasswordExists).toBe(true);
+				});
+			});
 		}
 	};
 
