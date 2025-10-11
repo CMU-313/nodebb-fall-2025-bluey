@@ -34,7 +34,7 @@ Quick smoke tests
 
 Automated Testing
 -----------------
-Test Location: /test/topics.js
+Test Location: test/topics.js at the bottom
 
 Run tests in terminal with: npm test -- test/topics.js
 
@@ -44,6 +44,10 @@ Tests check for multiple aspects:
 3. Ensure that non anonymous posts are unaffected
 4. Ensure that API endpoints work and both the frontend and backend handle anonymous data correctly
 5. Cover edge cases such as guest users
+
+Why tests are sufficient
+
+These tests cover a wide range of potential problems that may develop from the addition of an anonymous posting feature. They both make sure that the feature works as intended, and that other features are not impacted. They also specifically ensure that privileged users can see the usernames of those who post anonymously, as that was the most difficult and error prone part of the feature during development.
 
 ---
 
