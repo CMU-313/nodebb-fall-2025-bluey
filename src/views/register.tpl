@@ -11,6 +11,7 @@
 			<div class="col-12 col-md-5 col-lg-3 px-md-0">
 				<div class="register-block">
 					<form component="register/local" class="d-flex flex-column gap-3" role="form" action="{config.relative_path}/register" method="post">
+
 						<div class="mb-2 d-flex flex-column gap-2">
 							<label for="username">[[register:username]]</label>
 							<div class="d-flex flex-column">
@@ -22,12 +23,19 @@
 
 						<div class="mb-2 d-flex flex-column gap-2">
 							<label for="password">[[register:password]]</label>
-							<div class="d-flex flex-column">
+							<div class="d-flex flex-column position-relative">
 								<input class="form-control" type="password" placeholder="[[register:password-placeholder]]" name="password" id="password" autocomplete="new-password" autocapitalize="off" aria-required="true" aria-describedby="password-notify"/>
+								
+								
+								<button type="button" class="toggle-button btn btn-outline-secondary btn-sm mt-2" data-bs-toggle="button" aria-pressed="false">
+									Show Password
+								</button>
+
 								<span class="register-feedback text-xs text-danger" id="password-notify" aria-live="polite"></span>
 								<span class="form-text text-xs">[[register:help.minimum-password-length, {minimumPasswordLength}]]</span>
 								<p id="caps-lock-warning" class="text-danger hidden">
 									<i class="fa fa-exclamation-triangle"></i> [[login:caps-lock-enabled]]
+									[[login:show-password]]
 								</p>
 							</div>
 						</div>

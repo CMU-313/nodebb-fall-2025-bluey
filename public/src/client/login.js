@@ -5,7 +5,7 @@ define('forum/login', ['hooks', 'translator', 'jquery-form'], function (hooks, t
 	const Login = {
 		_capsState: false,
 	};
-
+	
 	Login.init = function () {
 		const errorEl = $('#login-error-notify');
 		const submitEl = $('#login');
@@ -117,6 +117,7 @@ define('forum/login', ['hooks', 'translator', 'jquery-form'], function (hooks, t
 		if (Login._capsState) {
 			toggle(true);
 		}
+
 	};
 
 	return Login;

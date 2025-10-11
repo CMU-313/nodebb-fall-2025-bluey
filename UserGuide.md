@@ -328,4 +328,47 @@ These tests ensure the API route behaves predictably regardless of input or back
 - They confirm that the output schema is consistent for the frontend consumer.
 ---
 
-## **Section 5 – [Feature Placeholder: Member 5]**
+## **Section 5 – [Show Password Toggle button: Luciana Requena]**
+
+You can test this feature by opening the log-in page, this feature should appear when user starts typing. 
+
+## Purpose: 
+Enhance user experience by making the login form more intuitive. Serve as a visual cue for password visibility features in future updates.
+
+## Steps:
+1) Open the login page
+2) Locate the Show Password button
+3) Verify appearance
+
+## Tests location:
+public/src/client/login.js
+
+| Test | Purpose |
+|------|----------|
+| `placeholder test for Show Password button` | Confirms that a .toggle-button element exists in the login form.|
+
+
+## Rationale:
+
+- This test acts as a smoke check to ensure the UI element is present.
+- It prevents accidental removal or misplacement of the toggle button during other login form updates.
+- Can be extended in the future to test real interactivity (e.g., toggling the password field type from password to text).
+
+## Expected Behavior
+
+- Element: .toggle-button exists in the login form.
+- Visibility: Button is visible to the user near the password field.
+- Accessibility: aria-pressed attribute is set correctly for potential screen reader support.
+- Interactivity: Currently static; does not change password visibility.
+
+
+## Limitations and Next Steps
+
+- The button does not yet implement the actual “show/hide password” functionality
+
+Future enhancements may include:
+- Changing the password input type dynamically
+- Updating aria-pressed and button icon to reflect state
+- Optional user preference for remembering password visibility choice
+
+

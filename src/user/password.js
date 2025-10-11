@@ -44,4 +44,6 @@ module.exports = function (User) {
 		const hashedPassword = await db.getObjectField(`user:${uid}`, 'password');
 		return !!hashedPassword;
 	};
+
+	
 };
