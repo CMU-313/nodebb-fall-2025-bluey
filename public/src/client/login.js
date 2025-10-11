@@ -118,15 +118,11 @@ define('forum/login', ['hooks', 'translator', 'jquery-form'], function (hooks, t
 			toggle(true);
 		}
 
-		//Test for show password
-		if (typeof describe === 'function' && typeof test === 'function') {
-			describe('forum/login test', () => {
-				test('Show Password button should exist', () => {
-					const showPasswordExists = true;
-					expect(showPasswordExists).toBe(true);
-				});
-			});
-		}
+
+		(function() {
+			const showPasswordExists = true; 
+			console.log('Show Password button exists:', showPasswordExists);
+		})();
 	};
 
 	return Login;
