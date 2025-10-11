@@ -1,0 +1,21 @@
+{
+  "name": "nodebb-plugin-composer-suggestions",
+  "version": "1.0.0",
+  "main": "library.js",
+  "scripts": {
+    "test": "mocha tests/**/*.test.js --require jsdom-global/register --timeout 5000"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "chai": "^6.2.0",
+    "jquery": "^3.7.1",
+    "jsdom": "^27.0.0",
+    "jsdom-global": "^3.0.2",
+    "mocha": "^11.7.4",
+    "sinon": "^21.0.0",
+    "supertest": "^7.1.4"
+  }
+}

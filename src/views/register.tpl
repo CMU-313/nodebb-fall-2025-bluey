@@ -31,6 +31,7 @@
 									[[login:show-password]]
 								</p>
 							</div>
+							
 						</div>
 
 						<div class="mb-2 d-flex flex-column gap-2">

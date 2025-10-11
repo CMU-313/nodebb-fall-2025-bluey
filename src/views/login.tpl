@@ -3,6 +3,7 @@
 	{{widgets.header.html}}
 	{{{end}}}
 </div>
+
 <div class="row login flex-fill">
 	<div class="d-flex flex-column gap-2 {{{ if widgets.sidebar.length }}}col-lg-9 col-sm-12{{{ else }}}col-lg-12{{{ end }}}">
 		<h2 class="tracking-tight fw-semibold text-center">[[global:login]]</h2>
@@ -10,6 +11,12 @@
 			{{{ if allowLocalLogin }}}
 			<div class="col-12 col-md-5 col-lg-3 px-md-0">
 				<div class="login-block">
+					
+					<!-- Added Toggle Button -->
+					<button class="toggle-button btn btn-outline-primary mb-3" data-bs-toggle="button" aria-pressed="false">
+						Toggle
+					</button>
+
 					<form class="d-flex flex-column gap-3" role="form" method="post" id="login-form">
 						<div class="mb-2 d-flex flex-column gap-2">
 							<label for="username">{allowLoginWith}</label>
@@ -89,12 +96,14 @@
 			{{{ end }}}
 		</div>
 	</div>
+
 	<div data-widget-area="sidebar" class="col-lg-3 col-sm-12 {{{ if !widgets.sidebar.length }}}hidden{{{ end }}}">
 		{{{each widgets.sidebar}}}
 		{{widgets.sidebar.html}}
 		{{{end}}}
 	</div>
 </div>
+
 <div data-widget-area="footer">
 	{{{each widgets.footer}}}
 	{{widgets.footer.html}}
