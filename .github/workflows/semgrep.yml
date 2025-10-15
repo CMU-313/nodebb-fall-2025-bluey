@@ -13,22 +13,28 @@ jobs:
       - name: Check out
         uses: actions/checkout@v4
 
-      - name: Set up Python & pipx
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install Semgrep (native CLI)
+      - name: Install Semgrep (via pip)
         run: |
-          python -m pip install --upgrade pip pipx
-          pipx install semgrep
+          python -m pip install --upgrade pip
+          python -m pip install semgrep
+          python -m semgrep --version
 
-      - name: Run Semgrep scan (SARIF + JSON artifacts)
+      - name: Run Semgrep (SARIF)
         run: |
-          semgrep scan --config .semgrep.yml --sarif -o semgrep.sarif
-          semgrep scan --config .semgrep.yml --json -o semgrep.json
+          python -m semgrep scan \
+            --config p/javascript \
+            --config p/typescript \
+            --sarif -o semgrep.sarif
+
+      - name: Run Semgrep (JSON)
+        run: |
+          python -m semgrep scan \
+            --config p/javascript \
+            --config p/typescript \
+            --json -o semgrep.json
 
       - name: Upload artifacts
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: semgrep-reports
