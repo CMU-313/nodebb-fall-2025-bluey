@@ -1,0 +1,4 @@
+# .semgrep.yml
+rulesets:
+  - p/javascript
+  - p/typescript

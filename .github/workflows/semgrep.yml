@@ -1,0 +1,39 @@
+name: Semgrep
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  semgrep:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Set up Python & pipx
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Semgrep (native CLI)
+        run: |
+          python -m pip install --upgrade pip pipx
+          pipx install semgrep
+
+      - name: Run Semgrep scan (SARIF + JSON artifacts)
+        run: |
+          semgrep scan --config .semgrep.yml \
+            --error \
+            --sarif --output semgrep.sarif \
+            --json --output-format=json --output semgrep.json
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: semgrep-reports
+          path: |
+            semgrep.sarif
+            semgrep.json
