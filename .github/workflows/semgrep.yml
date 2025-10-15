@@ -13,22 +13,22 @@ jobs:
       - name: Check out
         uses: actions/checkout@v4
 
-      - name: Install Semgrep (via pip)
+      - name: Install Semgrep
         run: |
           python -m pip install --upgrade pip
           python -m pip install semgrep
-          python -m semgrep --version
+          semgrep --version
 
       - name: Run Semgrep (SARIF)
         run: |
-          python -m semgrep scan \
+          semgrep scan \
             --config p/javascript \
             --config p/typescript \
             --sarif -o semgrep.sarif
 
       - name: Run Semgrep (JSON)
         run: |
-          python -m semgrep scan \
+          semgrep scan \
             --config p/javascript \
             --config p/typescript \
             --json -o semgrep.json
