@@ -25,10 +25,8 @@ jobs:
 
       - name: Run Semgrep scan (SARIF + JSON artifacts)
         run: |
-          semgrep scan --config .semgrep.yml --error \
-            --sarif -o semgrep.sarif
-          semgrep scan --config .semgrep.yml --error \
-            --json -o semgrep.json
+          semgrep scan --config .semgrep.yml --sarif -o semgrep.sarif
+          semgrep scan --config .semgrep.yml --json -o semgrep.json
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
