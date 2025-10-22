@@ -1,0 +1,26 @@
+name: k6 smoke
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - "k6/**"
+      - ".github/workflows/k6.yml"
+jobs:
+  k6-smoke:
+    runs-on: ubuntu-latest
+    env:
+      BASE_URL: ${{ secrets.K6_BASE_URL }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: grafana/setup-k6-action@v1
+        with:
+          version: 'latest'
+      - name: Run k6 (logs)
+        run: k6 run k6/smoke.test.js
+      - name: Export summary (artifact)
+        run: k6 run --summary-export tool-output/k6-summary.json k6/smoke.test.js
+      - uses: actions/upload-artifact@v4
+        with:
+          name: k6-results
+          path: tool-output/**
