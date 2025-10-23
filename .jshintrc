@@ -1,18 +1,26 @@
 {
+  "esversion": 11,
   "node": true,
   "browser": true,
-  "devel": true,
-  "undef": true,
-  "unused": true,
-  "latedef": "nofunc",
+  "worker": true,
   "globals": {
-    "define": true,
-    "require": true,
-    "ajaxify": true,
-    "app": true,
+    "AbortSignal": true,
     "$": true,
-    "socket": true,
-    "translator": true,
-    "config": true
-  }
+    "jQuery": true,
+    "alert": true,
+    "bootbox": true,
+    "escape": true,
+    "define": true,
+    "config": true,
+    "overrides": true,
+    "self": true,
+    "caches": true,
+    "require": true,
+    "module": true,
+    "exports": true,
+    "app": true,
+    "utils": true,
+    "ajaxify": true,
+    "socket": true
+    }
 }
