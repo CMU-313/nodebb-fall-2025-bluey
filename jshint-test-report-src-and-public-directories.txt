@@ -1,0 +1,117 @@
+src/activitypub/inbox.js: line 319, col 9, Expected a 'break' statement before 'case'.
+
+src/api/categories.js: line 174, col 35, Functions declared within loops referencing an outer scoped variable may lead to confusing semantics. (cids)
+
+src/api/users.js: line 690, col 33, Confusing use of '!'.
+
+src/categories/icon.js: line 7, col 9, Expected an identifier and instead saw 'default' (a reserved word).
+
+src/categories/watch.js: line 17, col 13, Confusing use of '!'.
+src/categories/watch.js: line 25, col 48, Confusing use of '!'.
+
+src/cli/user.js: line 3, col 18, Redefinition of 'Option'.
+
+src/controllers/accounts/chats.js: line 107, col 9, Confusing use of '!'.
+
+src/controllers/accounts/settings.js: line 267, col 2, Unnecessary semicolon.
+
+src/controllers/helpers.js: line 485, col 75, Expected a 'break' statement before 'case'.
+
+src/database/mongo/sorted/intersect.js: line 143, col 67, Functions declared within loops referencing an outer scoped variable may lead to confusing semantics. (module)
+
+src/database/redis/connection.js: line 42, col 13, Confusing use of '!'.
+
+src/flags.js: line 902, col 17, Confusing use of '!'.
+
+src/groups/ownership.js: line 11, col 13, Confusing use of '!'.
+
+src/messaging/rooms.js: line 237, col 13, Confusing use of '!'.
+
+src/messaging/unread.js: line 9, col 13, Confusing use of '!'.
+
+src/meta/configs.js: line 192, col 13, Confusing use of '!'.
+
+src/meta/css.js: line 16, col 7, Redefinition of 'CSS'.
+
+src/notifications.js: line 345, col 9, Confusing use of '!'.
+src/notifications.js: line 362, col 49, Confusing use of '!'.
+
+src/privileges/helpers.js: line 209, col 22, Functions declared within loops referencing an outer scoped variable may lead to confusing semantics. (privileges)
+
+src/socket.io/categories.js: line 145, col 31, Confusing use of '!'.
+
+src/socket.io/modules.js: line 115, col 9, Confusing use of '!'.
+
+src/topics/follow.js: line 38, col 13, Confusing use of '!'.
+
+src/topics/tags.js: line 572, col 13, Confusing use of '!'.
+src/topics/tags.js: line 584, col 13, Confusing use of '!'.
+
+src/topics/unread.js: line 206, col 13, Confusing use of '!'.
+src/topics/unread.js: line 262, col 45, Functions declared within loops referencing an outer scoped variable may lead to confusing semantics. (params)
+src/topics/unread.js: line 351, col 13, Confusing use of '!'.
+
+src/user/admin.js: line 17, col 13, Confusing use of '!'.
+
+src/user/auth.js: line 15, col 13, Confusing use of '!'.
+src/user/auth.js: line 41, col 13, Confusing use of '!'.
+src/user/auth.js: line 103, col 13, Confusing use of '!'.
+
+src/user/categories.js: line 47, col 13, Confusing use of '!'.
+src/user/categories.js: line 57, col 13, Confusing use of '!'.
+src/user/categories.js: line 69, col 13, Confusing use of '!'.
+src/user/categories.js: line 88, col 13, Confusing use of '!'.
+
+src/user/email.js: line 219, col 9, Confusing use of '!'.
+
+src/user/index.js: line 213, col 9, Confusing use of '!'.
+
+src/user/online.js: line 11, col 36, Confusing use of '!'.
+src/user/online.js: line 23, col 13, Confusing use of '!'.
+
+src/user/posts.js: line 134, col 33, Confusing use of '!'.
+
+public/src/admin/manage/users.js: line 568, col 27, If a strict mode function is executed using function invocation, its 'this' value will be undefined.
+
+public/src/admin/settings/navigation.js: line 57, col 32, If a strict mode function is executed using function invocation, its 'this' value will be undefined.
+public/src/admin/settings/navigation.js: line 157, col 25, If a strict mode function is executed using function invocation, its 'this' value will be undefined.
+public/src/admin/settings/navigation.js: line 164, col 23, If a strict mode function is executed using function invocation, its 'this' value will be undefined.
+
+public/src/ajaxify.js: line 48, col 95, Script URL.
+public/src/ajaxify.js: line 59, col 76, Script URL.
+public/src/ajaxify.js: line 517, col 52, The Function constructor is a form of eval.
+
+public/src/client/account/header.js: line 135, col 26, If a strict mode function is executed using function invocation, its 'this' value will be undefined.
+
+public/src/client/flags/detail.js: line 20, col 53, Expected a 'break' statement before 'case'.
+
+public/src/client/post-queue.js: line 173, col 26, If a strict mode function is executed using function invocation, its 'this' value will be undefined.
+public/src/client/post-queue.js: line 174, col 26, If a strict mode function is executed using function invocation, its 'this' value will be undefined.
+
+public/src/client/topic/merge.js: line 88, col 27, If a strict mode function is executed using function invocation, its 'this' value will be undefined.
+
+public/src/client/topic/votes.js: line 36, col 25, If a strict mode function is executed using function invocation, its 'this' value will be undefined.
+public/src/client/topic/votes.js: line 38, col 55, If a strict mode function is executed using function invocation, its 'this' value will be undefined.
+public/src/client/topic/votes.js: line 47, col 25, If a strict mode function is executed using function invocation, its 'this' value will be undefined.
+public/src/client/topic/votes.js: line 51, col 55, If a strict mode function is executed using function invocation, its 'this' value will be undefined.
+
+public/src/modules/helpers.common.js: line 303, col 23, If a strict mode function is executed using function invocation, its 'this' value will be undefined.
+
+public/src/modules/postSelect.js: line 23, col 30, If a strict mode function is executed using function invocation, its 'this' value will be undefined.
+public/src/modules/postSelect.js: line 25, col 48, If a strict mode function is executed using function invocation, its 'this' value will be undefined.
+
+public/src/modules/settings/array.js: line 118, col 93, Functions declared within loops referencing an outer scoped variable may lead to confusing semantics. (element)
+
+public/src/modules/settings/object.js: line 93, col 25, Functions declared within loops referencing an outer scoped variable may lead to confusing semantics. (element)
+
+public/src/modules/settings.js: line 116, col 35, Confusing use of '!'.
+
+public/src/utils.common.js: line 519, col 121, Confusing use of '!'.
+
+public/vendor/jquery/draggable-background/backgroundDraggable.js: line 94, col 15, Missing semicolon.
+public/vendor/jquery/draggable-background/backgroundDraggable.js: line 96, col 14, Missing semicolon.
+public/vendor/jquery/draggable-background/backgroundDraggable.js: line 98, col 15, Missing semicolon.
+public/vendor/jquery/draggable-background/backgroundDraggable.js: line 100, col 15, Missing semicolon.
+public/vendor/jquery/draggable-background/backgroundDraggable.js: line 182, col 4, Missing semicolon.
+
+70 errors
