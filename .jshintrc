@@ -1,0 +1,18 @@
+{
+  "node": true,
+  "browser": true,
+  "devel": true,
+  "undef": true,
+  "unused": true,
+  "latedef": "nofunc",
+  "globals": {
+    "define": true,
+    "require": true,
+    "ajaxify": true,
+    "app": true,
+    "$": true,
+    "socket": true,
+    "translator": true,
+    "config": true
+  }
+}
