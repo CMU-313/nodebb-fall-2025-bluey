@@ -1,0 +1,10 @@
+node ➜ /workspaces/nodebb-fall-2025-bluey (flow-branch) $ npm run flow
+
+> nodebb@4.4.6 flow
+> flow
+
+Launching Flow server for /workspaces/nodebb-fall-2025-bluey
+Spawned flow server (pid=14308)
+Logs will go to /tmp/flow/zSworkspaceszSnodebb-fall-2025-bluey.log
+Monitor logs will go to /tmp/flow/zSworkspaceszSnodebb-fall-2025-bluey.monitor_log
+No errors!
